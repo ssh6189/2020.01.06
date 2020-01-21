@@ -1,0 +1,26 @@
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+train = cv2.imread("C:/Users/student/Desktop/background.png")
+print(train.shape)
+b, g, r = cv2.split(train)
+hb = plt.hist(b.ravel(), 256, [0, 256], color = 'b')
+hg = plt.hist(g.ravel(), 256, [0, 256], color = 'g')
+hr = plt.hist(r.ravel(), 256, [0, 256], color = 'r')
+
+maxb = (np.where(hb[0] == np.max(hb[0])))[0][0]
+maxg = (np.where(hg[0] == np.max(hg[0])))[0][0]
+maxr = (np.where(hr[0] == np.max(hr[0])))[0][0]
+
+print(maxb)
+print(maxg)
+print(maxr)
+
+test = cv2.imread("C:/Users/student/Desktop/zoo.jpg")
+for r in range(test.shape[0]):
+    for c in range(test.shape[1]):
+        if np.array_equal (test[r, c, :], [maxb, maxg, maxr]):
+            test[r, c, : ] = [0, 0, 0]
+            
+plt.imshow(cv2.cvtColor(test, cv2.COLOR_BGR2RGB))
